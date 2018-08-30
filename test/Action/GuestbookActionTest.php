@@ -6,7 +6,6 @@ use Guestbook\Action\GuestbookAction;
 use Guestbook\Dao\MessagesDao;
 use Guestbook\View\ViewRenderer;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;

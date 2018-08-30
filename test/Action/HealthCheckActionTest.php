@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Integration;
+namespace Test\Action;
 
 use Guestbook\Action\HealthCheckAction;
 use Guestbook\Dao\PDOFactory;
