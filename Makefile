@@ -25,7 +25,7 @@ ssh-test: ## SSH into web server container
 	docker-compose run gbtest /bin/bash
 
 phpunit: ## SSH into test web server container and run tests
-	docker-compose run gbtest /bin/bash -l -c "vendor/bin/phpunit test/ --testdox"
+	docker-compose run gbtest /bin/bash -l -c "vendor/bin/phpunit --testdox"
 
 mysql: ## Opens mysql cli
 	docker-compose exec mysql mysql -u guestbook -pguestbook
