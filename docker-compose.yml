@@ -8,7 +8,7 @@ services:
       MYSQL_DATABASE: "guestbook"
       MYSQL_ROOT_PASSWORD: "gbroot"
     volumes:
-      - ./environment/db:/var/lib/mysql
+      - ./environment/mysql:/var/lib/mysql
   gbweb:
     build:
       context: ./environment/web
