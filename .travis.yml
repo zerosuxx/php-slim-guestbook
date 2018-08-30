@@ -10,4 +10,4 @@ script:
   - make phpunit
   
 after_success:
-  - docker-compose run test vendor/bin/php-coveralls -v
+  - docker-compose run gbtest vendor/bin/php-coveralls -v
