@@ -3,3 +3,4 @@ vendor/
 coverage/
 environment/mysql/
 .DS_Store
+clover.xml
