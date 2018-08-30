@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysql:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_USER: "guestbook"
+      MYSQL_PASSWORD: "guestbook"
+      MYSQL_DATABASE: "guestbook"
+      MYSQL_ROOT_PASSWORD: "gbroot"
+    volumes:
+      - ./environment/db:/var/lib/mysql
+  gbweb:
+    build:
+      context: ./environment/web
+    links:
+      - mysql
+    environment:
+      PHP_ENV: "dev"
+    ports:
+      - '8080:80'
+    volumes:
+      - ${DOCUMENT_ROOT-./}:/var/www/html
+      - ${VHOSTS_DIR-./environment/web/vhosts}:/etc/apache2/sites-enabled
+  gbtest:
+    build:
+      context: ./environment/test
+    links:
+      - mysql
+    environment:
+      PHP_ENV: "test"
+    volumes:
+      - .:/opt/project
