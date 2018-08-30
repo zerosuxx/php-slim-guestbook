@@ -25,18 +25,23 @@ class ViewRenderer
      * @param string $template
      * @param array $vars [optional]
      * @return ResponseInterface
+     * @throws \RuntimeException
      */
     public function render(ResponseInterface $response, string $template, array $vars = [])
     {
         $file = $this->templatePath . $template;
 
-        ob_start();
+        if(!file_exists($file)) {
+            throw new \RuntimeException(sprintf('File not found: %s', $file));
+        }
+
         $requireFile = function($__template, $__vars) {
             extract($__vars);
             require $__template;
         };
-        $requireFile($file, $vars);
 
+        ob_start();
+        $requireFile($file, $vars);
         $contents = ob_get_clean();
         $response->getBody()->write($contents);
         return $response;
