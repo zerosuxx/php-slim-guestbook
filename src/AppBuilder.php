@@ -2,6 +2,7 @@
 
 namespace Guestbook;
 
+use Guestbook\Action\HealthCheckAction;
 use Slim\App;
 
 /**
@@ -18,6 +19,11 @@ class AppBuilder
             unset($app->getContainer()['errorHandler']);
             unset($app->getContainer()['phpErrorHandler']);
         }
+        $this->addRoutes($app);
         return $app;
+    }
+
+    private function addRoutes(App $app) {
+        $app->get('/healthcheck', HealthCheckAction::class);
     }
 }
