@@ -4,6 +4,9 @@ build: ## Build docker compose
 	@docker-compose build
 
 up: ## Start containers
+	docker-compose up
+
+upd: ## Start containers in background
 	docker-compose up -d
 
 destroy: ## Destroys containers
