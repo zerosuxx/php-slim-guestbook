@@ -10,8 +10,7 @@ services:
       - ./environment/mysql:/var/lib/mysql
       - ./environment/init_sql:/docker-entrypoint-initdb.d
   gbweb:
-    build:
-      context: ./environment/web
+    image: "zerosuxx/php-dev:7.2.9-apache"
     links:
       - mysql
     environment:
@@ -22,7 +21,7 @@ services:
       - ${DOCUMENT_ROOT-./}:/var/www/html
       - ${VHOSTS_DIR-./environment/web/vhosts}:/etc/apache2/sites-enabled
   gbtest:
-    image: "zerosuxx/php-dev:7.2.9"
+    image: "zerosuxx/php-dev:7.2.9-cli"
     links:
       - mysql
     environment:

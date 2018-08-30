@@ -10,3 +10,6 @@ before_script:
 
 script:
   - make phpunit
+  
+after_success:
+  - travis_retry php vendor/bin/php-coveralls -v
