@@ -2,8 +2,11 @@
 
 namespace Guestbook;
 
+use Guestbook\Action\GuestbookAction;
 use Guestbook\Action\HealthCheckAction;
+use Guestbook\Dao\MessagesDao;
 use Guestbook\Dao\PDOFactory;
+use Guestbook\View\ViewRenderer;
 use Slim\App;
 use Slim\Container;
 
@@ -33,13 +36,23 @@ class AppBuilder
         $container[HealthCheckAction::class] = function (Container $container) {
             return new HealthCheckAction(new PDOFactory());
         };
-        $container['pdo'] = function () {
+        $container[GuestbookAction::class] = function (Container $container) {
+            return new GuestbookAction($container->get(MessagesDao::class), $container->get(ViewRenderer::class));
+        };
+        $container[ViewRenderer::class] = function (Container $container) {
+            return new ViewRenderer(__DIR__ . '/../templates/');
+        };
+        $container[MessagesDao::class] = function (Container $container) {
+            return new MessagesDao($container->get('PDO'));
+        };
+        $container['PDO'] = function () {
             return (new PDOFactory())->getPDO();
         };
     }
 
     private function addRoutes(App $app) {
         $app->get('/healthcheck', HealthCheckAction::class);
+        $app->get('/guestbook', GuestbookAction::class);
     }
 
 
