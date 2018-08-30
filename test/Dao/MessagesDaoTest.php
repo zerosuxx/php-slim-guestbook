@@ -11,6 +11,25 @@ class MessagesDaoTest extends TestCase
 {
 
     /**
+     * @var \PDO
+     */
+    private $pdo;
+
+    /**
+     * @var MessagesDao
+     */
+    private $dao;
+
+    protected function setUp()
+    {
+        $this->pdo = (new PDOFactory())->getPDO();
+        $this->pdo->query('TRUNCATE TABLE messages');
+
+        $this->dao = new MessagesDao($this->pdo);
+
+    }
+
+    /**
      * @test
      */
     public function getMessages_WithOneMessage_ReturnsMessage()
@@ -24,16 +43,12 @@ class MessagesDaoTest extends TestCase
             ]
         ];
 
-        $pdo = (new PDOFactory())->getPDO();
-
-        $pdo->query('TRUNCATE TABLE messages');
-        $statement = $pdo->prepare('INSERT INTO messages (name, email, message, created_at) 
+        $statement = $this->pdo->prepare('INSERT INTO messages (name, email, message, created_at) 
                                           VALUES (:name, :email, :message, :created_at)');
         $statement->execute($records[0]);
 
-        $dao = new MessagesDao($pdo);
 
-        $result = $dao->getMessages();
+        $result = $this->dao->getMessages();
 
         $this->assertEquals($records, $result);
     }
@@ -64,19 +79,15 @@ class MessagesDaoTest extends TestCase
             ]
         ];
 
-        $pdo = (new PDOFactory())->getPDO();
 
-        $pdo->query('TRUNCATE TABLE messages');
-        $statement = $pdo->prepare('INSERT INTO messages (name, email, message, created_at) 
+        $statement = $this->pdo->prepare('INSERT INTO messages (name, email, message, created_at) 
                                           VALUES (:name, :email, :message, :created_at)');
 
         foreach($records as $record) {
             $statement->execute($record);
         }
 
-        $dao = new MessagesDao($pdo);
-
-        $result = $dao->getMessages();
+        $result = $this->dao->getMessages();
 
         $this->assertEquals($records[0], $result[2]);
         $this->assertEquals($records[1], $result[1]);
