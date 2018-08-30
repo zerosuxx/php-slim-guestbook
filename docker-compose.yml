@@ -5,17 +5,17 @@ services:
     environment:
       MYSQL_USER: "guestbook"
       MYSQL_PASSWORD: "guestbook"
-      MYSQL_DATABASE: "guestbook"
       MYSQL_ROOT_PASSWORD: "gbroot"
     volumes:
       - ./environment/mysql:/var/lib/mysql
+      - ./environment/init_sql:/docker-entrypoint-initdb.d
   gbweb:
     build:
       context: ./environment/web
     links:
       - mysql
     environment:
-      PHP_ENV: "dev"
+      APPLICATION_ENV: "dev"
     ports:
       - '8080:80'
     volumes:
@@ -27,6 +27,6 @@ services:
     links:
       - mysql
     environment:
-      PHP_ENV: "test"
+      APPLICATION_ENV: "test"
     volumes:
       - .:/opt/project
