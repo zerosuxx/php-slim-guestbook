@@ -5,7 +5,7 @@ namespace Test\Integration;
 use PHPUnit\Framework\TestCase;
 use Test\WebTestCase;
 
-class HealtcheckPageTest extends TestCase
+class HealthCheckPageTest extends TestCase
 {
     use WebTestCase;
     /**
@@ -15,5 +15,6 @@ class HealtcheckPageTest extends TestCase
     {
         $response = $this->runApp('GET', '/healthcheck');
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('OK', $response->getBody().'');
     }
 }
