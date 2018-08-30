@@ -1,10 +1,6 @@
 <?php
-require_once 'bootstrap.php';
 
-$dsn = 'mysql:host=mysql;charset=utf8mb4';
-$pdo = new PDO($dsn, getenv('DB_USER'), getenv('DB_PASSWORD'));
-$pdo->query("CREATE DATABASE IF NOT EXISTS guestbook");
-$pdo->query("CREATE DATABASE IF NOT EXISTS guestbook_test");
+require_once 'bootstrap.php';
 
 return
 [
@@ -19,8 +15,8 @@ return
             'adapter' => 'mysql',
             'host' => 'mysql',
             'name' => 'guestbook',
-            'user' => 'guestbook',
-            'pass' => 'guestbook',
+            'user' => 'root',
+            'pass' => 'gbroot',
             'port' => '3306',
             'charset' => 'utf8',
         ],
@@ -28,8 +24,8 @@ return
             'adapter' => 'mysql',
             'host' => 'mysql',
             'name' => 'guestbook_test',
-            'user' => 'guestbook',
-            'pass' => 'guestbook',
+            'user' => 'root',
+            'pass' => 'gbroot',
             'port' => '3306',
             'charset' => 'utf8',
         ]
