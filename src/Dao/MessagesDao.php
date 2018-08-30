@@ -21,9 +21,12 @@ class MessagesDao
         $this->pdo = $pdo;
     }
 
+    /**
+     * @return array
+     */
     public function getMessages()
     {
-        $statement = $this->pdo->query('SELECT name, email, message, created_at FROM messages');
+        $statement = $this->pdo->query('SELECT name, email, message, created_at FROM messages ORDER BY created_at DESC');
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
