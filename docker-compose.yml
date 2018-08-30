@@ -22,7 +22,7 @@ services:
       - ${DOCUMENT_ROOT-./}:/var/www/html
       - ${VHOSTS_DIR-./environment/web/vhosts}:/etc/apache2/sites-enabled
   gbtest:
-    image: "zerosuxx/php-cli-dev:7.2.9"
+    image: "zerosuxx/php-dev:7.2.9"
     links:
       - mysql
     environment:
