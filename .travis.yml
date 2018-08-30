@@ -1,5 +1,7 @@
 sudo: required
-
+language: php
+php:
+  - 7.1.9
 env:
   - COMPOSE_VERSION: 1.8.0
 
@@ -10,4 +12,4 @@ script:
   - make phpunit
   
 after_success:
-  - docker-compose run -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" -e TRAVIS_BRANCH="$TRAVIS_BRANCH" -e TRAVIS="$TRAVIS" gbtest vendor/bin/php-coveralls -v
+  - travis_retry php vendor/bin/php-coveralls -v
