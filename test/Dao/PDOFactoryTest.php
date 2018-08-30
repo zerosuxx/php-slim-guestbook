@@ -19,7 +19,7 @@ class PDOFactoryTest extends TestCase
     /**
      * @test
      */
-    public function getPDO_WithEnvConfig_ReturnsPDOInstanceWith() {
+    public function getPDO_WithEnvConfig_ReturnsSamePDOInstance() {
         $pdo = $this->factory->getPDO();
         $this->assertInstanceOf(\PDO::class, $this->factory->getPDO());
         $this->assertSame($pdo, $this->factory->getPDO());
@@ -28,7 +28,7 @@ class PDOFactoryTest extends TestCase
     /**
      * @test
      */
-    public function getPDOWithoutDatabase_WithEnvConfig_ReturnsPDOInstanceWithoutUseDatabase() {
+    public function getPDOWithoutDatabase_WithEnvConfig_ReturnsSamePDOInstanceWithoutUseDatabase() {
         $pdo = $this->factory->getPDOWithoutDatabase();
         $result = $pdo->query('SELECT DATABASE() AS db')->fetch();
         $this->assertInstanceOf(\PDO::class, $pdo);
