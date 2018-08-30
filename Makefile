@@ -31,7 +31,7 @@ mysql: ## Opens mysql cli
 	docker-compose exec mysql mysql -u guestbook -pguestbook
 
 composer-install: ## Runs composer install for sample_project
-	docker-compose exec gbweb /bin/bash -l -c "composer install && php vendor/bin/phinx migrate -e development"
+	docker-compose run gbtest /bin/bash -l -c "composer install && vendor/bin/phinx migrate -e development -e testing"
 
 migrate-dbs: ## Migrates databases
 	docker-compose exec gbweb /bin/bash -l -c "php vendor/bin/phinx migrate -e development && php vendor/bin/phinx migrate -e testing"
@@ -40,3 +40,6 @@ seed-dbs: ## Migrates databases
 	docker-compose exec gbweb /bin/bash -l -c "php vendor/bin/phinx seed:run -e development && php vendor/bin/phinx seed:run -e testing"
 
 install: destroy build up composer-install migrate-dbs seed-dbs
+
+init-test: ## Init for testing
+	docker-compose pull mysql && docker-compose pull gbtest && docker-compose up -d mysql && make composer-install

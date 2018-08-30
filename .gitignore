@@ -1,8 +1,5 @@
 .idea/
 vendor/
 coverage/
-environment/mysql/ib_logfile0
-environment/mysql/ib_buffer_pool
-environment/mysql/ibdata1
-environment/mysql/ibtmp1
+environment/mysql/
 .DS_Store
