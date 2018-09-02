@@ -12,5 +12,5 @@ script:
   - make phpunit
   
 after_success:
-  - sed -i "s|/opt/project|$PWD|g" coverage/clover.xml
+  - sed -i "s|/opt/project|$PWD|g" clover.xml
   - travis_retry php vendor/bin/php-coveralls -v
