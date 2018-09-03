@@ -8,5 +8,9 @@ namespace Guestbook\Validator;
  */
 interface ValidatorInterface
 {
+    /**
+     * @throws ValidationException
+     * @return void
+     */
     public function validate();
 }
