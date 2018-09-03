@@ -21,4 +21,13 @@ class EmptyValidatorTest extends TestCase {
         $this->expectExceptionMessage('Name can not be empty');
         $emptyValidator->validate();
     }
+
+    /**
+     * @test
+     */
+    public function validate_givenNotEmptyString_ReturnsNull() {
+        $emptyValidator = new EmptyValidator('Name', 'Test name');
+        $emptyValidator->validate();
+        $this->expectNotToPerformAssertions();
+    }
 }
