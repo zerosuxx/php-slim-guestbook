@@ -53,9 +53,9 @@ class GuestbookAddPageTest extends TestCase
     {
         $response = $this->runApp('POST', '/guestbook/add', []);
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Name required', (string)$response->getBody());
-        $this->assertContains('Email required', (string)$response->getBody());
-        $this->assertContains('Message required', (string)$response->getBody());
+        $this->assertContains('Name can not be empty', (string)$response->getBody());
+        $this->assertContains('Email can not be empty', (string)$response->getBody());
+        $this->assertContains('Message can not be empty', (string)$response->getBody());
     }
 
     /**
@@ -68,6 +68,6 @@ class GuestbookAddPageTest extends TestCase
             'message' => 'Test message'
         ]);
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('Email required', (string)$response->getBody());
+        $this->assertContains('Email can not be empty', (string)$response->getBody());
     }
 }

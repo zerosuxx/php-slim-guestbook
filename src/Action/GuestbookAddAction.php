@@ -3,6 +3,10 @@
 namespace Guestbook\Action;
 
 use Guestbook\Dao\MessagesDao;
+use Guestbook\Validator\EmailValidator;
+use Guestbook\Validator\EmptyValidator;
+use Guestbook\Validator\ValidationException;
+use Guestbook\Validator\Validator;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
@@ -21,12 +25,17 @@ class GuestbookAddAction
      * @var Twig
      */
     private $view;
+    /**
+     * @var Validator
+     */
+    private $validator;
 
 
-    public function __construct(MessagesDao $messagesDao, Twig $view)
+    public function __construct(MessagesDao $messagesDao, Twig $view, Validator $validator)
     {
         $this->messagesDao = $messagesDao;
         $this->view = $view;
+        $this->validator = $validator;
     }
 
     public function __invoke(Request $request, Response $response, array $args)
@@ -35,34 +44,17 @@ class GuestbookAddAction
         $email = $request->getParsedBodyParam('email');
         $message = $request->getParsedBodyParam('message');
 
-//        $mv = (new MessageValidator())
-//            ->add(new EmptyValidator($name))
-//            ->add(new EmptyValidator($email))
-//            ->add(new EmailValidator($email))
-//            ->add(new EmptyValidator($message))
-//            ->validate();
-
-        $errors = [];
-        if (strlen($name) === 0) {
-            $errors['name'] = 'Name required';
-        }
-
-        if (strlen($email) === 0) {
-            $errors['email'] = 'Email required';
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = 'Wrong email format';
-        }
-
-        if (strlen($message) === 0) {
-            $errors['message'] = 'Message required';
-        }
-
-        if (empty($errors)) {
+        try {
+            $this->validator
+                ->add(new EmptyValidator('Name', $name))
+                ->add(new EmptyValidator('Email', $email))
+                ->add(new EmailValidator($email))
+                ->add(new EmptyValidator('Message', $message))
+                ->validate();
             $this->messagesDao->saveMessage($name, $email, $message, new \DateTime());
             return $response->withRedirect('/guestbook');
-        } else {
-            return $this->view->render($response, 'guestbook.html.twig', ['errors' => $errors]);
+        } catch (ValidationException $ex) {
+            return $this->view->render($response, 'guestbook.html.twig', ['errors' => $ex->getMessage()]);
         }
-
     }
 }
