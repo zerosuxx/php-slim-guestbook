@@ -35,6 +35,10 @@ class GuestbookAddAction
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
         $message = $request->getParsedBodyParam('message');
+
+        if (strlen($name) === 0) {
+            return $this->view->render($response, 'guestbook.html.twig', ['errors' => 'Name required,Email required,Message required']);
+        }
         if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->messagesDao->saveMessage($name, $email, $message, new \DateTime());
             return $response->withRedirect('/guestbook');

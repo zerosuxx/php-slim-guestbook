@@ -45,4 +45,16 @@ class GuestbookAddPageTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Wrong email format', (string)$response->getBody());
     }
+
+    /**
+     * @test
+     */
+    public function callsGuestbookAddPage_GivenEmptyRequestData_ReturnsWithRedirect()
+    {
+        $response = $this->runApp('POST', '/guestbook/add', []);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Name required', (string)$response->getBody());
+        $this->assertContains('Email required', (string)$response->getBody());
+        $this->assertContains('Message required', (string)$response->getBody());
+    }
 }

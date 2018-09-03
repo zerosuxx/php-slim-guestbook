@@ -9,9 +9,14 @@ services:
     volumes:
       - ./environment/mysql:/var/lib/mysql
       - ./environment/init_sql:/docker-entrypoint-initdb.d
+    networks:
+      ugyved-central-backend:
+        aliases:
+          - gb-net
+
   gbweb:
     build:
-          context: ./environment/web
+      context: ./environment/web
     links:
       - mysql
     environment:
@@ -29,3 +34,7 @@ services:
       APPLICATION_ENV: "test"
     volumes:
       - .:/opt/project
+networks:
+  gb-net:
+    external: true
+
