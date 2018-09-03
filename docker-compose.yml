@@ -17,8 +17,6 @@ services:
   gbweb:
     build:
       context: ./environment/web
-    links:
-      - mysql
     environment:
       APPLICATION_ENV: "dev"
     ports:
@@ -30,8 +28,6 @@ services:
       - gb-net
   gbtest:
     image: "zerosuxx/php-dev:7.2.9-cli"
-    links:
-      - mysql
     environment:
       APPLICATION_ENV: "test"
     volumes:
