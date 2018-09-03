@@ -24,7 +24,6 @@ class ValidatorTest extends TestCase
         $validator
             ->add($emptyValidator)
             ->validate();
-
     }
 
     /**
@@ -40,6 +39,14 @@ class ValidatorTest extends TestCase
             ->add($emptyValidator)
             ->add($emailValidator)
             ->validate();
+    }
 
+    /**
+     * @test
+     */
+    public function validate_givenZeroValidator_returnsNull() {
+        $validator = new \Guestbook\Validator\Validator();
+        $validator->validate();
+        $this->expectNotToPerformAssertions();
     }
 }

@@ -11,7 +11,7 @@ class Validator implements ValidatorInterface
     /**
      * @var ValidatorInterface[]
      */
-    private $validators;
+    private $validators = [];
 
     public function add(ValidatorInterface $validator)
     {
