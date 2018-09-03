@@ -10,7 +10,8 @@ services:
       - ./environment/mysql:/var/lib/mysql
       - ./environment/init_sql:/docker-entrypoint-initdb.d
   gbweb:
-    image: "zerosuxx/php-dev:7.2.9-apache"
+    build:
+          context: ./environment/web
     links:
       - mysql
     environment:

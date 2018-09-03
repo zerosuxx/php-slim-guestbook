@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Views\Twig;
 
 class GuestbookActionTest extends TestCase
 {
@@ -26,12 +27,12 @@ class GuestbookActionTest extends TestCase
 
         $responseMock = $this->createMock(Response::class);
 
-        $viewRendererMock = $this->createMock(ViewRenderer::class);
+        $viewRendererMock = $this->createMock(Twig::class);
 
         $viewRendererMock
             ->expects($this->once())
             ->method('render')
-            ->with($responseMock, 'guestbook.php', ['messages' => $messages])
+            ->with($responseMock, 'guestbook.html.twig', ['messages' => $messages])
             ->willReturn($responseMock);
 
         $action = new GuestbookAction($messagesDaoMock, $viewRendererMock);

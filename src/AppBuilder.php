@@ -9,6 +9,8 @@ use Guestbook\Dao\PDOFactory;
 use Guestbook\View\ViewRenderer;
 use Slim\App;
 use Slim\Container;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
 
 class AppBuilder
 {
@@ -18,6 +20,7 @@ class AppBuilder
         $container = new Container($this->getConfig());
         $app = new App($container);
 
+        $this->setupTwig($container);
         $this->addDependencies($container);
         $this->addRoutes($app);
 
@@ -37,7 +40,7 @@ class AppBuilder
             return new HealthCheckAction(new PDOFactory());
         };
         $container[GuestbookAction::class] = function (Container $container) {
-            return new GuestbookAction($container->get(MessagesDao::class), $container->get(ViewRenderer::class));
+            return new GuestbookAction($container->get(MessagesDao::class), $container->get('view'));
         };
         $container[ViewRenderer::class] = function (Container $container) {
             return new ViewRenderer(__DIR__ . '/../templates/');
@@ -47,6 +50,19 @@ class AppBuilder
         };
         $container['PDO'] = function () {
             return (new PDOFactory())->getPDO();
+        };
+    }
+
+    private function setupTwig(Container $container) {
+        $container['view'] = function ($container) {
+            $view = new Twig(__DIR__ . "/../templates/", [
+                'cache' => false
+            ]);
+
+            $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
+            $view->addExtension(new TwigExtension($container->get('router'), $basePath));
+
+            return $view;
         };
     }
 
