@@ -51,5 +51,4 @@ class MessagesDao
         return $statement->execute($record);
     }
 
-
 }

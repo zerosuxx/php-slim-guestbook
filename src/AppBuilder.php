@@ -42,9 +42,6 @@ class AppBuilder
         $container[GuestbookAction::class] = function (Container $container) {
             return new GuestbookAction($container->get(MessagesDao::class), $container->get('view'));
         };
-        $container[ViewRenderer::class] = function (Container $container) {
-            return new ViewRenderer(__DIR__ . '/../templates/');
-        };
         $container[MessagesDao::class] = function (Container $container) {
             return new MessagesDao($container->get('PDO'));
         };
