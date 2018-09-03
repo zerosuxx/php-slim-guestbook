@@ -25,7 +25,7 @@ ssh-test: ## SSH into web server container
 	docker-compose run gbtest /bin/bash
 
 phpunit: ## SSH into test web server container and run tests
-	docker-compose run gbtest /bin/bash -l -c "vendor/bin/phpunit --testdox"
+	docker-compose run gbtest /bin/bash -l -c "vendor/bin/phpunit --testdox --coverage-html coverage --coverage-clover clover.xml"
 
 mysql: ## Opens mysql cli
 	docker-compose exec mysql mysql -u guestbook -pguestbook
@@ -42,4 +42,4 @@ seed-dbs: ## Migrates databases
 install: destroy build up composer-install migrate-dbs seed-dbs
 
 init-test: ## Init for testing
-	docker-compose pull mysql && docker-compose pull gbtest && docker-compose up -d mysql && make composer-install
+	(docker network create gb-net || true) && docker-compose pull mysql && docker-compose pull gbtest && docker-compose up -d mysql && make composer-install

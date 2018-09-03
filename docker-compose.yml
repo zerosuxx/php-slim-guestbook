@@ -10,9 +10,9 @@ services:
       - ./environment/mysql:/var/lib/mysql
       - ./environment/init_sql:/docker-entrypoint-initdb.d
     networks:
-      ugyved-central-backend:
+      gb-net:
         aliases:
-          - gb-net
+          - mysql
 
   gbweb:
     build:
@@ -26,6 +26,8 @@ services:
     volumes:
       - ${DOCUMENT_ROOT-./}:/var/www/html
       - ${VHOSTS_DIR-./environment/web/vhosts}:/etc/apache2/sites-enabled
+    networks:
+      - gb-net
   gbtest:
     image: "zerosuxx/php-dev:7.2.9-cli"
     links:
@@ -34,6 +36,8 @@ services:
       APPLICATION_ENV: "test"
     volumes:
       - .:/opt/project
+    networks:
+      - gb-net
 networks:
   gb-net:
     external: true
