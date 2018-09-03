@@ -6,7 +6,7 @@ namespace Guestbook\Validator;
  * Class EmptyValidator
  * @package Guestbook\Validator
  */
-class EmptyValidator
+class EmptyValidator implements ValidatorInterface
 {
     private $name;
     private $value;

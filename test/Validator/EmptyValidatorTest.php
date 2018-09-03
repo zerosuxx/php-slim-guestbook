@@ -7,7 +7,7 @@ use Guestbook\Validator\ValidationException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class EmptyValidatorTets
+ * Class EmptyValidatorTest
  * @package Test\Validator
  */
 class EmptyValidatorTest extends TestCase {
