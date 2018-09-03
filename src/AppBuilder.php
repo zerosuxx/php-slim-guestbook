@@ -44,7 +44,7 @@ class AppBuilder
             return new GuestbookAction($container->get(MessagesDao::class), $container->get('view'));
         };
         $container[GuestbookAddAction::class] = function (Container $container) {
-            return new GuestbookAddAction($container->get(MessagesDao::class));
+            return new GuestbookAddAction($container->get(MessagesDao::class), $container->get('view'));
         };
         $container[MessagesDao::class] = function (Container $container) {
             return new MessagesDao($container->get('PDO'));

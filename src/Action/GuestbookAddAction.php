@@ -18,11 +18,16 @@ class GuestbookAddAction
      * @var MessagesDao
      */
     private $messagesDao;
+    /**
+     * @var Twig
+     */
+    private $view;
 
 
-    public function __construct(MessagesDao $messagesDao)
+    public function __construct(MessagesDao $messagesDao, Twig $view)
     {
         $this->messagesDao = $messagesDao;
+        $this->view = $view;
     }
 
     public function __invoke(Request $request, Response $response, array $args)
@@ -30,7 +35,12 @@ class GuestbookAddAction
         $name = $request->getParsedBodyParam('name');
         $email = $request->getParsedBodyParam('email');
         $message = $request->getParsedBodyParam('message');
-        $this->messagesDao->saveMessage($name, $email, $message, new \DateTime());
-        return $response->withRedirect('/guestbook');
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->messagesDao->saveMessage($name, $email, $message, new \DateTime());
+            return $response->withRedirect('/guestbook');
+        } else {
+            return $this->view->render($response, 'guestbook.html.twig', ['errors' => 'Wrong email format']);
+        }
+
     }
 }

@@ -31,4 +31,18 @@ class GuestbookAddPageTest extends TestCase
         $this->assertEquals('Test message', $messages[0]['message']);
         $this->assertEquals(1, count($messages));
     }
+
+    /**
+     * @test
+     */
+    public function callsGuestbookAddPage_GivenInvalidRequestData_ReturnsWithRedirect()
+    {
+        $response = $this->runApp('POST', '/guestbook/add', [
+            'name' => 'Test name',
+            'email' => 'testtest.test',
+            'message' => 'Test message'
+        ]);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Wrong email format', (string)$response->getBody());
+    }
 }
