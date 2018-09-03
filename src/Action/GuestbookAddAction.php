@@ -54,7 +54,10 @@ class GuestbookAddAction
             $this->messagesDao->saveMessage($name, $email, $message, new \DateTime());
             return $response->withRedirect('/guestbook');
         } catch (ValidationException $ex) {
-            return $this->view->render($response, 'guestbook.html.twig', ['errors' => $ex->getMessage()]);
+            return $this->view->render($response, 'guestbook.html.twig', [
+                'errors' => $ex->getMessage(),
+                'messages' => $this->messagesDao->getMessages()
+            ]);
         }
     }
 }
