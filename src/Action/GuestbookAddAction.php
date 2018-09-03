@@ -3,7 +3,6 @@
 namespace Guestbook\Action;
 
 use Guestbook\Dao\MessagesDao;
-use Guestbook\View\ViewRenderer;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
@@ -36,14 +35,33 @@ class GuestbookAddAction
         $email = $request->getParsedBodyParam('email');
         $message = $request->getParsedBodyParam('message');
 
+//        $mv = (new MessageValidator())
+//            ->add(new EmptyValidator($name))
+//            ->add(new EmptyValidator($email))
+//            ->add(new EmailValidator($email))
+//            ->add(new EmptyValidator($message))
+//            ->validate();
+
+        $errors = [];
         if (strlen($name) === 0) {
-            return $this->view->render($response, 'guestbook.html.twig', ['errors' => 'Name required,Email required,Message required']);
+            $errors['name'] = 'Name required';
         }
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+        if (strlen($email) === 0) {
+            $errors['email'] = 'Email required';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Wrong email format';
+        }
+
+        if (strlen($message) === 0) {
+            $errors['message'] = 'Message required';
+        }
+
+        if (empty($errors)) {
             $this->messagesDao->saveMessage($name, $email, $message, new \DateTime());
             return $response->withRedirect('/guestbook');
         } else {
-            return $this->view->render($response, 'guestbook.html.twig', ['errors' => 'Wrong email format']);
+            return $this->view->render($response, 'guestbook.html.twig', ['errors' => $errors]);
         }
 
     }

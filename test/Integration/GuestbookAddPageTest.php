@@ -35,7 +35,7 @@ class GuestbookAddPageTest extends TestCase
     /**
      * @test
      */
-    public function callsGuestbookAddPage_GivenInvalidRequestData_ReturnsWithRedirect()
+    public function callsGuestbookAddPage_GivenInvalidRequestData_ReturnsWithErrors()
     {
         $response = $this->runApp('POST', '/guestbook/add', [
             'name' => 'Test name',
@@ -49,12 +49,25 @@ class GuestbookAddPageTest extends TestCase
     /**
      * @test
      */
-    public function callsGuestbookAddPage_GivenEmptyRequestData_ReturnsWithRedirect()
+    public function callsGuestbookAddPage_GivenEmptyRequestData_ReturnsWithErrors()
     {
         $response = $this->runApp('POST', '/guestbook/add', []);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Name required', (string)$response->getBody());
         $this->assertContains('Email required', (string)$response->getBody());
         $this->assertContains('Message required', (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     */
+    public function callsGuestbookAddPage_GivenEmptyEmailInRequestData_ReturnsWithErrors()
+    {
+        $response = $this->runApp('POST', '/guestbook/add', [
+            'name' => 'Test name',
+            'message' => 'Test message'
+        ]);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Email required', (string)$response->getBody());
     }
 }

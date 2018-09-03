@@ -1,4 +1,6 @@
-{{ errors }}
+{% for k,error in errors %}
+    {{ error }}<br>
+{% endfor %}
 <table>
     <thead>
     <tr>
