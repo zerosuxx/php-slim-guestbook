@@ -20,4 +20,13 @@ class EmailValidatorTest extends TestCase {
         $this->expectExceptionMessage('Wrong email format');
         $emptyValidator->validate();
     }
+
+    /**
+     * @test
+     */
+    public function validate_givenValidEmail_returnsNull() {
+        $emptyValidator = new \Guestbook\Validator\EmailValidator('test@test.test');
+        $emptyValidator->validate();
+        $this->expectNotToPerformAssertions();
+    }
 }
