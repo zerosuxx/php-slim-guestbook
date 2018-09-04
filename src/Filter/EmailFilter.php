@@ -6,7 +6,7 @@ namespace Guestbook\Filter;
  * Class EmailFilter
  * @package Guestbook\Filter
  */
-class EmailFilter
+class EmailFilter implements FilterInterface
 {
     public function filter($value)
     {
