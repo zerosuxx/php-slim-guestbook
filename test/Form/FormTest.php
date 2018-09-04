@@ -10,7 +10,6 @@ use Guestbook\Validator\EmptyValidator;
 use Guestbook\Validator\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Request;
 
 /**
  * Class FormTest
@@ -44,9 +43,10 @@ class FormTest extends TestCase
                 'message' => 'Test message<br>',
             ]);
 
-        $this->form->input('name', new StringFilter());
-        $this->form->input('email', new EmailFilter());
-        $this->form->input('message', new StringFilter());
+        $this->form
+            ->input('name', new StringFilter())
+            ->input('email', new EmailFilter())
+            ->input('message', new StringFilter());
 
         $data = $this->form->handle($mockRequest)->getData();
         $this->assertCount(3, $data);
@@ -68,9 +68,10 @@ class FormTest extends TestCase
                 'not-exists' => null
             ]);
 
-        $this->form->input('name', new StringFilter());
-        $this->form->input('email', new EmailFilter());
-        $this->form->input('message', new StringFilter());
+        $this->form
+            ->input('name', new StringFilter())
+            ->input('email', new EmailFilter())
+            ->input('message', new StringFilter());
 
         $data = $this->form->handle($mockRequest)->getData();
         $this->assertCount(3, $data);
@@ -86,8 +87,9 @@ class FormTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->form->input('name', new StringFilter());
-        $this->form->input('name', new StringFilter());
+        $this->form
+            ->input('name', new StringFilter())
+            ->input('name', new StringFilter());
     }
 
     /**
@@ -107,8 +109,9 @@ class FormTest extends TestCase
                 'email' => 'testtest.test',
             ]);
 
-        $this->form->input('name', new StringFilter(), new EmptyValidator('Name'));
-        $this->form->input('email', new StringFilter(), new EmailValidator());
+        $this->form
+            ->input('name', new StringFilter(), new EmptyValidator('Name'))
+            ->input('email', new StringFilter(), new EmailValidator());
 
         $this->form
             ->handle($mockRequest)

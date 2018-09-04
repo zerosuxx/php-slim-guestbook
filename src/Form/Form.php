@@ -41,7 +41,13 @@ class Form
         return $this->data;
     }
 
-    public function input($name, FilterInterface $filter, ValidatorInterface $validator = null) {
+    /**
+     * @param string $name
+     * @param FilterInterface $filter
+     * @param ValidatorInterface|null $validator
+     * @return self
+     */
+    public function input(string $name, FilterInterface $filter, ValidatorInterface $validator = null) {
         if(in_array($name, $this->inputs)) {
             throw new \InvalidArgumentException(sprintf('An input named "%s" has already been added!', $name));
         }
@@ -51,8 +57,13 @@ class Form
         if($validator) {
             $this->validators[$name] = $validator;
         }
+        return $this;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return self
+     */
     public function handle(ServerRequestInterface $request)
     {
         $postData = $request->getParsedBody();
