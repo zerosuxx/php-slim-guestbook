@@ -42,4 +42,4 @@ seed-dbs: ## Migrates databases
 install: destroy build up composer-install migrate-dbs seed-dbs
 
 init-test: ## Init for testing
-	(docker network create gb-net) && docker-compose pull mysql && docker-compose pull gbtest && docker-compose up -d mysql && make composer-install
+	(docker network create gb-net || true) && docker-compose pull mysql && docker-compose pull gbtest && docker-compose up -d mysql && make composer-install
