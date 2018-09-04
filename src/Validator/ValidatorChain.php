@@ -3,10 +3,10 @@
 namespace Guestbook\Validator;
 
 /**
- * Class Validator
+ * Class ValidatorChain
  * @package Guestbook\Validator
  */
-class Validator implements ValidatorInterface
+class ValidatorChain implements ValidatorInterface
 {
     /**
      * @var ValidatorInterface[]
@@ -19,12 +19,12 @@ class Validator implements ValidatorInterface
         return $this;
     }
 
-    public function validate()
+    public function validate($value)
     {
         $errors = [];
         foreach ($this->validators as $validator) {
             try {
-                $validator->validate();
+                $validator->validate($value);
             } catch (ValidationException $ex) {
                 $errors[] = $ex->getMessage();
             }
