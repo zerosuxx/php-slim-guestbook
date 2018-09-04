@@ -8,13 +8,26 @@ namespace Guestbook\Entity;
  */
 class Message
 {
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var string
+     */
     private $email;
+
+    /**
+     * @var string
+     */
+    private $message;
 
     public function __construct(string $name, string $email, string $message)
     {
         $this->name = $name;
         $this->email = $email;
+        $this->message = $message;
     }
 
     /**
@@ -31,6 +44,14 @@ class Message
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
     }
 
 }

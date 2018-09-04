@@ -2,6 +2,7 @@
 
 namespace Test\Entity;
 
+use Guestbook\Entity\Message;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,15 +16,25 @@ class MessageTest extends TestCase
      */
     public function getName_ReturnsName()
     {
-        $message = new \Guestbook\Entity\Message('Test name', '', '');
+        $message = new Message('Test name', '', '');
         $this->assertEquals('Test name', $message->getName());
     }
+
     /**
      * @test
      */
-    public function getEmail_ReturnsName()
+    public function getEmail_ReturnsEmail()
     {
-        $message = new \Guestbook\Entity\Message('', 'test@test.test', '');
+        $message = new Message('', 'test@test.test', '');
         $this->assertEquals('test@test.test', $message->getEmail());
+    }
+
+    /**
+     * @test
+     */
+    public function getMessage_ReturnsMessage()
+    {
+        $message = new Message('', '', 'test message');
+        $this->assertEquals('test message', $message->getMessage());
     }
 }
