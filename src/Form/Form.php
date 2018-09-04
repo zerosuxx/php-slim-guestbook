@@ -3,6 +3,8 @@
 namespace Guestbook\Form;
 
 use Guestbook\Filter\FilterInterface;
+use Guestbook\Validator\ValidationException;
+use Guestbook\Validator\ValidatorInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -22,17 +24,33 @@ class Form
     private $filters = [];
 
     /**
+     * @var ValidatorInterface[]
+     */
+    private $validators = [];
+
+    /**
      * @var array
      */
     private $data = [];
 
-    public function input($name, FilterInterface $filter) {
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function input($name, FilterInterface $filter, ValidatorInterface $validator = null) {
         if(in_array($name, $this->inputs)) {
             throw new \InvalidArgumentException(sprintf('An input named "%s" has already been added!', $name));
         }
         $this->inputs[] = $name;
-        $this->filters[$name] = $filter;
         $this->data[$name] = null;
+        $this->filters[$name] = $filter;
+        if($validator) {
+            $this->validators[$name] = $validator;
+        }
     }
 
     public function handle(ServerRequestInterface $request)
@@ -46,8 +64,21 @@ class Form
         return $this;
     }
 
-    public function getData()
+    public function validate()
     {
-        return $this->data;
+        $data = $this->getData();
+        $errors = [];
+        foreach($this->validators as $name => $validator) {
+            try {
+                $validator->validate($data[$name]);
+            } catch (ValidationException $ex) {
+                $errors[] = $ex->getMessage();
+            }
+        }
+        if($errors) {
+            throw new ValidationException(implode("\n", $errors));
+        }
     }
+
+
 }

@@ -5,6 +5,9 @@ namespace Test\Form;
 use Guestbook\Filter\EmailFilter;
 use Guestbook\Filter\StringFilter;
 use Guestbook\Form\Form;
+use Guestbook\Validator\EmailValidator;
+use Guestbook\Validator\EmptyValidator;
+use Guestbook\Validator\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\Request;
@@ -40,8 +43,6 @@ class FormTest extends TestCase
                 'email' => 'test@test.test()',
                 'message' => 'Test message<br>',
             ]);
-
-      
 
         $this->form->input('name', new StringFilter());
         $this->form->input('email', new EmailFilter());
@@ -87,5 +88,30 @@ class FormTest extends TestCase
 
         $this->form->input('name', new StringFilter());
         $this->form->input('name', new StringFilter());
+    }
+
+    /**
+     * @test
+     */
+    public function validate_GivenSomeInputsWithInvalidDataAndValidator_ThrowsException()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Name can not be empty' . "\n" . 'Wrong email format');
+
+        $mockRequest = $this->createMock(ServerRequestInterface::class);
+        $mockRequest
+            ->expects($this->once())
+            ->method('getParsedBody')
+            ->willReturn([
+                'name' => '',
+                'email' => 'testtest.test',
+            ]);
+
+        $this->form->input('name', new StringFilter(), new EmptyValidator('Name'));
+        $this->form->input('email', new StringFilter(), new EmailValidator());
+
+        $this->form
+            ->handle($mockRequest)
+            ->validate();
     }
 }
