@@ -9,10 +9,12 @@ namespace Guestbook\Entity;
 class Message
 {
     private $name;
+    private $email;
 
-    public function __construct($name, $email, $message)
+    public function __construct(string $name, string $email, string $message)
     {
         $this->name = $name;
+        $this->email = $email;
     }
 
     /**
@@ -22,4 +24,13 @@ class Message
     {
         return $this->name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
 }
