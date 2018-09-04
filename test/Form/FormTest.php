@@ -15,6 +15,17 @@ use Slim\Http\Request;
  */
 class FormTest extends TestCase
 {
+
+    /**
+     * @var Form
+     */
+    private $form;
+    
+    protected function setUp()
+    {
+        $this->form = new Form();
+    }
+
     /**
      * @test
      */
@@ -30,13 +41,13 @@ class FormTest extends TestCase
                 'message' => 'Test message<br>',
             ]);
 
-        $form = new Form();
+      
 
-        $form->input('name', new StringFilter());
-        $form->input('email', new EmailFilter());
-        $form->input('message', new StringFilter());
+        $this->form->input('name', new StringFilter());
+        $this->form->input('email', new EmailFilter());
+        $this->form->input('message', new StringFilter());
 
-        $data = $form->handle($mockRequest)->getData();
+        $data = $this->form->handle($mockRequest)->getData();
         $this->assertCount(3, $data);
         $this->assertEquals('Test name', $data['name']);
         $this->assertEquals('test@test.test', $data['email']);
@@ -56,13 +67,11 @@ class FormTest extends TestCase
                 'not-exists' => null
             ]);
 
-        $form = new Form();
+        $this->form->input('name', new StringFilter());
+        $this->form->input('email', new EmailFilter());
+        $this->form->input('message', new StringFilter());
 
-        $form->input('name', new StringFilter());
-        $form->input('email', new EmailFilter());
-        $form->input('message', new StringFilter());
-
-        $data = $form->handle($mockRequest)->getData();
+        $data = $this->form->handle($mockRequest)->getData();
         $this->assertCount(3, $data);
         $this->assertEquals('', $data['name']);
         $this->assertEquals('', $data['email']);
@@ -72,12 +81,11 @@ class FormTest extends TestCase
     /**
      * @test
      */
-    public function add_GivenSameInput_ThrowsException()
+    public function add_GivenSameInputs_ThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $form = new Form();
 
-        $form->input('name', new StringFilter());
-        $form->input('name', new StringFilter());
+        $this->form->input('name', new StringFilter());
+        $this->form->input('name', new StringFilter());
     }
 }
