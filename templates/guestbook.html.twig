@@ -1,6 +1,8 @@
+<pre>
 {% for error in errors %}
-    {{ error }}<br>
+{{ error }}
 {% endfor %}
+</pre>
 <form method="POST" action="/guestbook/add">
     <input type="hidden" name="_token" value="{{ token }}">
     <table>
@@ -14,7 +16,6 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th>Email</th>
         <th>Message</th>
         <th>Created</th>
     </tr>
@@ -23,7 +24,6 @@
     {% for msg in messages %}
         <tr>
             <td>{{ msg.name }}</td>
-            <td>{{ msg.email }}</td>
             <td>{{ msg.message }}</td>
             <td>{{ msg.created_at }}</td>
         </tr>
