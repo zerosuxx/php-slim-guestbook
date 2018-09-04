@@ -9,6 +9,6 @@ namespace Guestbook\Filter;
 class StringFilter
 {
     public function filter($value) {
-        return filter_var($value, FILTER_SANITIZE_STRING);
+        return trim(filter_var($value, FILTER_SANITIZE_STRING));
     }
 }

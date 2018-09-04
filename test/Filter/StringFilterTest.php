@@ -27,4 +27,13 @@ class StringFilterTest extends TestCase
         $filter = new \Guestbook\Filter\StringFilter();
         $this->assertEquals('Test string', $filter->filter($value));
     }
+
+    /**
+     * @test
+     */
+    public function filter_GivenOnlyWhitespacesData_ReturnsEmptyValue() {
+        $value = '     ';
+        $filter = new \Guestbook\Filter\StringFilter();
+        $this->assertEquals('', $filter->filter($value));
+    }
 }
