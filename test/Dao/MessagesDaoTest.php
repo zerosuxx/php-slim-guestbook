@@ -5,6 +5,7 @@ namespace Test\Dao;
 
 use Guestbook\Dao\MessagesDao;
 use Guestbook\Dao\PDOFactory;
+use Guestbook\Entity\Message;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
@@ -100,21 +101,17 @@ class MessagesDaoTest extends TestCase
      */
     public function saveMessage_WithParameters_SavesMessageToDb()
     {
-        $name = 'Joe';
-        $email = 'joe@joe.hu';
-        $message = 'test message';
-        $createdAt = new \DateTime();
-
-        $saved = $this->dao->saveMessage($name, $email, $message, $createdAt);
+        $message = new Message('Joe', 'joe@joe.hu', 'test message');
+        $saved = $this->dao->saveMessage($message);
         $this->assertTrue($saved);
 
         $statement = $this->pdo->query('SELECT name, message, email, created_at FROM messages ORDER BY created_at DESC');
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $this->assertEquals($name, $result[0]['name']);
-        $this->assertEquals($email, $result[0]['email']);
-        $this->assertEquals($message, $result[0]['message']);
-        $this->assertEquals($createdAt->format('Y-m-d H:i:s'), $result[0]['created_at']);
+        $this->assertEquals($message->getName(), $result[0]['name']);
+        $this->assertEquals($message->getEmail(), $result[0]['email']);
+        $this->assertEquals($message->getMessage(), $result[0]['message']);
+        $this->assertNotEmpty($result[0]['created_at']);
         $this->assertEquals(1, $statement->rowCount());
 
     }

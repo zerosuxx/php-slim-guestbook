@@ -2,6 +2,8 @@
 
 namespace Guestbook\Dao;
 
+use Guestbook\Entity\Message;
+
 /**
  * Class MessagesDao
  * @package Guestbook\Dao
@@ -31,22 +33,19 @@ class MessagesDao
     }
 
     /**
-     * @param string $name
-     * @param string $email
-     * @param string $message
-     * @param \DateTime $createdAt
+     * @param Message $message
      * @return bool
      */
-    public function saveMessage(string $name, string $email, string $message, \DateTime $createdAt)
+    public function saveMessage(Message $message)
     {
         $statement = $this->pdo->prepare('INSERT INTO messages (name, email, message, created_at) 
                                           VALUES (:name, :email, :message, :created_at)');
 
         $record = [
-            'name' => $name,
-            'email' => $email,
-            'message' => $message,
-            'created_at' => $createdAt->format('Y-m-d H:i:s')
+            'name' => $message->getName(),
+            'email' => $message->getEmail(),
+            'message' => $message->getMessage(),
+            'created_at' => (new \DateTime())->format('Y-m-d H:i:s')
         ];
         return $statement->execute($record);
     }
