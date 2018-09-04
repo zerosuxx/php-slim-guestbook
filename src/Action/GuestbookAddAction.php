@@ -8,7 +8,6 @@ use Guestbook\Filter\StringFilter;
 use Guestbook\Form\Form;
 use Guestbook\Validator\EmailValidator;
 use Guestbook\Validator\EmptyValidator;
-use Guestbook\Validator\ValidationException;
 use Guestbook\Validator\ValidatorChain;
 use Slim\Http\Request;
 use Slim\Http\Response;
