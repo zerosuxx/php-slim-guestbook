@@ -34,11 +34,24 @@ class Form
     private $data = [];
 
     /**
+     * @var array
+     */
+    private $errors = [];
+
+    /**
      * @return array
      */
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 
     /**
@@ -78,17 +91,15 @@ class Form
     public function validate()
     {
         $data = $this->getData();
-        $errors = [];
+        $this->errors = [];
         foreach($this->validators as $name => $validator) {
             try {
                 $validator->validate($data[$name]);
             } catch (ValidationException $ex) {
-                $errors[] = $ex->getMessage();
+                $this->errors[$name] = $ex->getMessage();
             }
         }
-        if($errors) {
-            throw new ValidationException(implode("\n", $errors));
-        }
+        return empty($this->errors);
     }
 
 

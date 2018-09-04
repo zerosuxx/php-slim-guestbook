@@ -95,11 +95,8 @@ class FormTest extends TestCase
     /**
      * @test
      */
-    public function validate_GivenSomeInputsWithInvalidDataAndValidator_ThrowsException()
+    public function validate_GivenSomeInputsWithInvalidDataAndValidator_ReturnFalse()
     {
-        $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Name can not be empty' . "\n" . 'Wrong email format');
-
         $mockRequest = $this->createMock(ServerRequestInterface::class);
         $mockRequest
             ->expects($this->once())
@@ -113,8 +110,13 @@ class FormTest extends TestCase
             ->input('name', new StringFilter(), new EmptyValidator('Name'))
             ->input('email', new StringFilter(), new EmailValidator());
 
-        $this->form
+        $isValid = $this->form
             ->handle($mockRequest)
             ->validate();
+        $this->assertFalse($isValid);
+        $this->assertEquals([
+            'name' => 'Name can not be empty',
+            'email' => 'Wrong email format',
+        ], $this->form->getErrors());
     }
 }
