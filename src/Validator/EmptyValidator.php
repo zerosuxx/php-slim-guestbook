@@ -9,22 +9,15 @@ namespace Guestbook\Validator;
 class EmptyValidator implements ValidatorInterface
 {
     private $name;
-    private $value;
 
-    /**
-     * EmptyValidator constructor.
-     * @param $name
-     * @param mixed $value
-     */
-    public function __construct($name, $value)
+    public function __construct($name)
     {
-        $this->value = $value;
         $this->name = $name;
     }
 
-    public function validate()
+    public function validate($value)
     {
-        if(strlen($this->value) === 0) {
+        if(strlen($value) === 0) {
             throw new ValidationException(sprintf('%s can not be empty', $this->name));
         }
     }
