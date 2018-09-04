@@ -4,6 +4,7 @@ namespace Test\Action;
 
 use Guestbook\Action\GuestbookAction;
 use Guestbook\Dao\MessagesDao;
+use Guestbook\Validator\CSRFTokenValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;
@@ -31,10 +32,10 @@ class GuestbookActionTest extends TestCase
         $viewRendererMock
             ->expects($this->once())
             ->method('render')
-            ->with($responseMock, 'guestbook.html.twig', ['messages' => $messages])
+            ->with($responseMock, 'guestbook.html.twig', ['messages' => $messages, 'token' => null])
             ->willReturn($responseMock);
 
-        $action = new GuestbookAction($messagesDaoMock, $viewRendererMock);
+        $action = new GuestbookAction($messagesDaoMock, $viewRendererMock, $this->createMock(CSRFTokenValidator::class));
 
         $result = $action($this->createMock(Request::class), $responseMock, []);
 

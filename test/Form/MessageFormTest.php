@@ -4,6 +4,7 @@ namespace Test\Form;
 
 use Guestbook\Entity\Message;
 use Guestbook\Form\MessageForm;
+use Guestbook\Validator\CSRFTokenValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -13,6 +14,10 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class MessageFormTest extends TestCase
 {
+    /**
+     * @var CSRFTokenValidator
+     */
+    private $csrf;
 
     /**
      * @var MessageForm
@@ -21,7 +26,8 @@ class MessageFormTest extends TestCase
     
     protected function setUp()
     {
-        $this->form = new MessageForm();
+        $this->csrf = new CSRFTokenValidator();
+        $this->form = new MessageForm($this->csrf);
     }
 
     /**
@@ -37,6 +43,7 @@ class MessageFormTest extends TestCase
                 'name' => 'Test name<br>',
                 'email' => 'test@test.test()',
                 'message' => 'Test message<br>',
+                '_token' => $this->csrf->getToken()
             ]);
 
         $message = $this->form
@@ -45,6 +52,5 @@ class MessageFormTest extends TestCase
         $this->assertInstanceOf(Message::class, $message);
         $this->assertEquals('Test name', $message->getName());
         $this->assertEquals('test@test.test', $message->getEmail());
-        $this->assertEquals('Test message', $message->getMessage());
     }
 }

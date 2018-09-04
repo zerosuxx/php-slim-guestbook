@@ -2,6 +2,7 @@
     {{ error }}<br>
 {% endfor %}
 <form method="POST" action="/guestbook/add">
+    <input type="hidden" name="_token" value="{{ token }}">
     <table>
         <tr><td>Name</td><td><input type="text" name="name" value="{{ data.name }}"></td></tr>
         <tr><td>Email</td><td><input type="email" name="email" value="{{ data.email }}"></td></tr>

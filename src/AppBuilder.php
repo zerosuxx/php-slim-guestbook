@@ -7,9 +7,8 @@ use Guestbook\Action\GuestbookAddAction;
 use Guestbook\Action\HealthCheckAction;
 use Guestbook\Dao\MessagesDao;
 use Guestbook\Dao\PDOFactory;
-use Guestbook\Form\Form;
 use Guestbook\Form\MessageForm;
-use Guestbook\Validator\ValidatorChain;
+use Guestbook\Validator\CSRFTokenValidator;
 use Slim\App;
 use Slim\Container;
 use Slim\Views\Twig;
@@ -43,10 +42,11 @@ class AppBuilder
             return new HealthCheckAction(new PDOFactory());
         };
         $container[GuestbookAction::class] = function (Container $container) {
-            return new GuestbookAction($container->get(MessagesDao::class), $container->get('view'));
+            return new GuestbookAction($container->get(MessagesDao::class), $container->get('view'), new CSRFTokenValidator());
         };
         $container[GuestbookAddAction::class] = function (Container $container) {
-            return new GuestbookAddAction($container->get(MessagesDao::class), $container->get('view'), new MessageForm());
+            $csrf = new CSRFTokenValidator();
+            return new GuestbookAddAction($container->get(MessagesDao::class), $container->get('view'), new MessageForm($csrf), $csrf);
         };
         $container[MessagesDao::class] = function (Container $container) {
             return new MessagesDao($container->get('PDO'));

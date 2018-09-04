@@ -4,6 +4,7 @@ namespace Test\Integration;
 
 use Guestbook\Dao\MessagesDao;
 use Guestbook\Dao\PDOFactory;
+use Guestbook\Validator\CSRFTokenValidator;
 use PHPUnit\Framework\TestCase;
 use Test\WebTestCase;
 
@@ -24,12 +25,14 @@ class GuestbookAddPageTest extends TestCase
      */
     public function callsGuestbookAddPage_GivenValidRequestData_ReturnsWithRedirect()
     {
+        $csrf = new CSRFTokenValidator();
         $pdo = (new PDOFactory())->getPDO();
         $pdo->query('TRUNCATE TABLE messages');
         $response = $this->runApp('POST', '/guestbook/add', [
             'name' => 'Test name',
             'email' => 'test@test.test',
-            'message' => 'Test message'
+            'message' => 'Test message',
+            '_token' => $csrf->getToken()
         ]);
         $dao = new MessagesDao($this->pdo);
         $messages = $dao->getMessages();

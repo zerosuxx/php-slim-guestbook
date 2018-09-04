@@ -3,6 +3,7 @@
 namespace Guestbook\Action;
 
 use Guestbook\Dao\MessagesDao;
+use Guestbook\Validator\CSRFTokenValidator;
 use Guestbook\View\ViewRenderer;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -23,16 +24,21 @@ class GuestbookAction
      * @var ViewRenderer
      */
     private $renderer;
+    /**
+     * @var CSRFTokenValidator
+     */
+    private $csrf;
 
-    public function __construct(MessagesDao $messagesDao, Twig $renderer)
+    public function __construct(MessagesDao $messagesDao, Twig $renderer, CSRFTokenValidator $csrf)
     {
         $this->messagesDao = $messagesDao;
         $this->renderer = $renderer;
+        $this->csrf = $csrf;
     }
 
     public function __invoke(Request $request, Response $response, array $args)
     {
         $messages = $this->messagesDao->getMessages();
-        return $this->renderer->render($response, 'guestbook.html.twig', ['messages' => $messages]);
+        return $this->renderer->render($response, 'guestbook.html.twig', ['messages' => $messages, 'token' => $this->csrf->getToken()]);
     }
 }
