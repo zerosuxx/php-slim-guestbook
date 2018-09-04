@@ -16,18 +16,18 @@ class EmptyValidatorTest extends TestCase {
      * @test
      */
     public function validate_givenEmptyString_throwsExceptionWithErrorMessage() {
-        $emptyValidator = new EmptyValidator('Name', '');
+        $emptyValidator = new EmptyValidator('Name');
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Name can not be empty');
-        $emptyValidator->validate();
+        $emptyValidator->validate('');
     }
 
     /**
      * @test
      */
     public function validate_givenNotEmptyString_ReturnsNull() {
-        $emptyValidator = new EmptyValidator('Name', 'Test name');
-        $emptyValidator->validate();
+        $emptyValidator = new EmptyValidator('Name');
+        $emptyValidator->validate('Test name');
         $this->expectNotToPerformAssertions();
     }
 }

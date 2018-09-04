@@ -15,18 +15,18 @@ class EmailValidatorTest extends TestCase {
      * @test
      */
     public function validate_givenInvalidEmail_throwsExceptionWithErrorMessage() {
-        $emptyValidator = new \Guestbook\Validator\EmailValidator('a@');
+        $emptyValidator = new \Guestbook\Validator\EmailValidator();
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Wrong email format');
-        $emptyValidator->validate();
+        $emptyValidator->validate('a@');
     }
 
     /**
      * @test
      */
     public function validate_givenValidEmail_returnsNull() {
-        $emptyValidator = new \Guestbook\Validator\EmailValidator('test@test.test');
-        $emptyValidator->validate();
+        $emptyValidator = new \Guestbook\Validator\EmailValidator();
+        $emptyValidator->validate('test@test.test');
         $this->expectNotToPerformAssertions();
     }
 }
