@@ -1,4 +1,6 @@
-<pre><code>{{ errors }}</code></pre>
+{% for error in errors %}
+    {{ error }}<br>
+{% endfor %}
 <form method="POST" action="/guestbook/add">
     <table>
         <tr><td>Name</td><td><input type="text" name="name" value="{{ data.name }}"></td></tr>
