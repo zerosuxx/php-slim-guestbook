@@ -18,4 +18,13 @@ class StringFilterTest extends TestCase
         $filter = new \Guestbook\Filter\StringFilter();
         $this->assertEquals('Test string', $filter->filter($value));
     }
+
+    /**
+     * @test
+     */
+    public function filter_GivenInValidData_ReturnsCleanedValue() {
+        $value = 'Test string<br>';
+        $filter = new \Guestbook\Filter\StringFilter();
+        $this->assertEquals('Test string', $filter->filter($value));
+    }
 }

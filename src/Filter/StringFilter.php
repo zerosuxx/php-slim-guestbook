@@ -8,15 +8,7 @@ namespace Guestbook\Filter;
  */
 class StringFilter
 {
-
-    /**
-     * StringFilter constructor.
-     */
-    public function __construct()
-    {
-    }
-
     public function filter($value) {
-        return $value;
+        return filter_var($value, FILTER_SANITIZE_STRING);
     }
 }
