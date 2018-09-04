@@ -5,10 +5,10 @@ namespace Guestbook\Action;
 use Guestbook\Dao\MessagesDao;
 use Guestbook\Form\Form;
 use Guestbook\Form\MessageForm;
-use Guestbook\Validator\CSRFTokenValidator;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
  * Class GuestbookAddAction
@@ -46,7 +46,7 @@ class GuestbookAddAction
 
     public function __invoke(Request $request, Response $response, array $args)
     {
-        if($this->form->handle($request)->validate()) {
+        if($this->form->handle($request)->isValid()) {
             $message = $this->form->getMessage();
             $this->messagesDao->saveMessage($message);
             return $response->withRedirect('/guestbook');

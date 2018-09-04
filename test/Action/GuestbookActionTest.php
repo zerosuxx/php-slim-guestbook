@@ -4,7 +4,7 @@ namespace Test\Action;
 
 use Guestbook\Action\GuestbookAction;
 use Guestbook\Dao\MessagesDao;
-use Guestbook\Validator\CSRFTokenValidator;
+use Zero\Form\Validator\CSRFTokenValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Request;

@@ -8,11 +8,11 @@ use Guestbook\Action\HealthCheckAction;
 use Guestbook\Dao\MessagesDao;
 use Guestbook\Dao\PDOFactory;
 use Guestbook\Form\MessageForm;
-use Guestbook\Validator\CSRFTokenValidator;
 use Slim\App;
 use Slim\Container;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 class AppBuilder
 {

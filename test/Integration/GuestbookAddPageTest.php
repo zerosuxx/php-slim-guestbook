@@ -4,9 +4,9 @@ namespace Test\Integration;
 
 use Guestbook\Dao\MessagesDao;
 use Guestbook\Dao\PDOFactory;
-use Guestbook\Validator\CSRFTokenValidator;
 use PHPUnit\Framework\TestCase;
 use Test\WebTestCase;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 class GuestbookAddPageTest extends TestCase
 {

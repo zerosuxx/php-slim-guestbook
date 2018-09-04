@@ -3,11 +3,11 @@
 namespace Guestbook\Action;
 
 use Guestbook\Dao\MessagesDao;
-use Guestbook\Validator\CSRFTokenValidator;
 use Guestbook\View\ViewRenderer;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
  * Class GuestbookAction

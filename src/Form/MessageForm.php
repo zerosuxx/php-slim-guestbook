@@ -3,12 +3,13 @@
 namespace Guestbook\Form;
 
 use Guestbook\Entity\Message;
-use Guestbook\Filter\EmailFilter;
-use Guestbook\Filter\StringFilter;
-use Guestbook\Validator\CSRFTokenValidator;
-use Guestbook\Validator\EmailValidator;
-use Guestbook\Validator\EmptyValidator;
-use Guestbook\Validator\ValidatorChain;
+use Zero\Form\Filter\EmailFilter;
+use Zero\Form\Filter\StringFilter;
+use Zero\Form\Form;
+use Zero\Form\Validator\CSRFTokenValidator;
+use Zero\Form\Validator\EmailValidator;
+use Zero\Form\Validator\EmptyValidator;
+use Zero\Form\Validator\ValidatorChain;
 
 /**
  * Class MessageForm

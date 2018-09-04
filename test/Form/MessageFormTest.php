@@ -4,9 +4,9 @@ namespace Test\Form;
 
 use Guestbook\Entity\Message;
 use Guestbook\Form\MessageForm;
-use Guestbook\Validator\CSRFTokenValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Zero\Form\Validator\CSRFTokenValidator;
 
 /**
  * Class FormTest
