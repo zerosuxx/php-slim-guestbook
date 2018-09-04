@@ -45,30 +45,26 @@ class GuestbookAddAction
 
     public function __invoke(Request $request, Response $response, array $args)
     {
-        try {
-            $emailValidator = new ValidatorChain();
-            $emailValidator
-                ->add(new EmptyValidator('Email'))
-                ->add(new EmailValidator());
+        $emailValidator = new ValidatorChain();
+        $emailValidator
+            ->add(new EmptyValidator('Email'))
+            ->add(new EmailValidator());
 
-            $this->form
-                ->input('name', new StringFilter(), new EmptyValidator('Name'))
-                ->input('email', new EmailFilter(), $emailValidator)
-                ->input('message', new StringFilter(), new EmptyValidator('Message'))
-                ->handle($request)
-                ->validate();
+        $this->form
+            ->input('name', new StringFilter(), new EmptyValidator('Name'))
+            ->input('email', new EmailFilter(), $emailValidator)
+            ->input('message', new StringFilter(), new EmptyValidator('Message'))
+            ->handle($request);
+
+        if($this->form->validate()) {
             $data = $this->form->getData();
             $this->messagesDao->saveMessage($data['name'], $data['email'], $data['message'], new \DateTime());
             return $response->withRedirect('/guestbook');
-        } catch (ValidationException $ex) {
+        } else {
             return $this->view->render($response, 'guestbook.html.twig', [
-                'errors' => $ex->getMessage(),
+                'errors' => $this->form->getErrors(),
                 'messages' => $this->messagesDao->getMessages(),
-                'data' => [
-                    //'name' => $name,
-                    //'email' => $email,
-                    //'message' => $message
-                ]
+                //'data' => $this->form->getData()
             ]);
         }
     }
