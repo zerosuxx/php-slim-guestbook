@@ -2,6 +2,7 @@
 
 namespace Test\Validator;
 
+use Guestbook\Validator\ValidationException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,6 +18,17 @@ class CSRFTokenValidatorTest extends TestCase
         $_SESSION['_csrf_token'] = 'valid-token';
         $validator = new \Guestbook\Validator\CSRFTokenValidator();
         $this->assertNull($validator->validate('valid-token'));
+        $this->assertNotEquals('valid-token', $validator->getToken());
+    }
+
+    /**
+     * @test
+     */
+    public function validate_GivenInValidToken_ThrowsException() {
+        $this->expectException(ValidationException::class);
+        $_SESSION['_csrf_token'] = 'valid-token';
+        $validator = new \Guestbook\Validator\CSRFTokenValidator();
+        $this->assertNull($validator->validate('in-valid-token'));
         $this->assertNotEquals('valid-token', $validator->getToken());
     }
 }
