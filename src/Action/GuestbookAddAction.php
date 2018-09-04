@@ -63,7 +63,7 @@ class GuestbookAddAction
             return $this->view->render($response, 'guestbook.html.twig', [
                 'errors' => $this->form->getErrors(),
                 'messages' => $this->messagesDao->getMessages(),
-                //'data' => $this->form->getData()
+                'data' => $this->form->getData()
             ]);
         }
     }

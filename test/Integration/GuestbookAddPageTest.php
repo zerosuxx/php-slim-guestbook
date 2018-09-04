@@ -10,6 +10,15 @@ use Test\WebTestCase;
 class GuestbookAddPageTest extends TestCase
 {
     use WebTestCase;
+
+    private $pdo;
+
+    protected function setUp()
+    {
+        $this->pdo = (new PDOFactory())->getPDO();
+        $this->pdo->query('TRUNCATE TABLE messages');
+    }
+
     /**
      * @test
      */
@@ -22,7 +31,7 @@ class GuestbookAddPageTest extends TestCase
             'email' => 'test@test.test',
             'message' => 'Test message'
         ]);
-        $dao = new MessagesDao($pdo);
+        $dao = new MessagesDao($this->pdo);
         $messages = $dao->getMessages();
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertEquals('/guestbook', $response->getHeaderLine('Location'));
@@ -69,6 +78,8 @@ class GuestbookAddPageTest extends TestCase
         ]);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Email can not be empty', (string)$response->getBody());
+        $this->assertContains('Test name', (string)$response->getBody());
+        $this->assertContains('Test message', (string)$response->getBody());
     }
 
     /**
