@@ -70,4 +70,20 @@ class GuestbookAddPageTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Email can not be empty', (string)$response->getBody());
     }
+
+    /**
+     * @test
+     */
+    public function callsGuestbookAddPage_GivenInvalidDataInRequestData_ReturnsWithErrors()
+    {
+        $response = $this->runApp('POST', '/guestbook/add', [
+            'name' => '<br>',
+            'message' => ['Test message'],
+            'email' => '()'
+        ]);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Name can not be empty', (string)$response->getBody());
+        $this->assertContains('Email can not be empty', (string)$response->getBody());
+        $this->assertContains('Message can not be empty', (string)$response->getBody());
+    }
 }

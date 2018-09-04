@@ -3,6 +3,8 @@
 namespace Guestbook\Action;
 
 use Guestbook\Dao\MessagesDao;
+use Guestbook\Filter\EmailFilter;
+use Guestbook\Filter\StringFilter;
 use Guestbook\Validator\EmailValidator;
 use Guestbook\Validator\EmptyValidator;
 use Guestbook\Validator\ValidationException;
@@ -40,9 +42,9 @@ class GuestbookAddAction
 
     public function __invoke(Request $request, Response $response, array $args)
     {
-        $name = $request->getParsedBodyParam('name');
-        $email = $request->getParsedBodyParam('email');
-        $message = $request->getParsedBodyParam('message');
+        $name = (new StringFilter())->filter($request->getParsedBodyParam('name'));
+        $email = (new EmailFilter())->filter($request->getParsedBodyParam('email'));
+        $message = (new StringFilter())->filter($request->getParsedBodyParam('message'));
 
         try {
             $this->validator
