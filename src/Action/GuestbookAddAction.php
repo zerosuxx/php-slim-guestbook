@@ -3,12 +3,8 @@
 namespace Guestbook\Action;
 
 use Guestbook\Dao\MessagesDao;
-use Guestbook\Filter\EmailFilter;
-use Guestbook\Filter\StringFilter;
 use Guestbook\Form\Form;
-use Guestbook\Validator\EmailValidator;
-use Guestbook\Validator\EmptyValidator;
-use Guestbook\Validator\ValidatorChain;
+use Guestbook\Form\MessageForm;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig;
@@ -35,7 +31,7 @@ class GuestbookAddAction
     private $form;
 
 
-    public function __construct(MessagesDao $messagesDao, Twig $view, Form $form)
+    public function __construct(MessagesDao $messagesDao, Twig $view, MessageForm $form)
     {
         $this->messagesDao = $messagesDao;
         $this->view = $view;
@@ -44,25 +40,14 @@ class GuestbookAddAction
 
     public function __invoke(Request $request, Response $response, array $args)
     {
-        $emailValidator = new ValidatorChain();
-        $emailValidator
-            ->add(new EmptyValidator('Email'))
-            ->add(new EmailValidator());
-
-        $this->form
-            ->input('name', new StringFilter(), new EmptyValidator('Name'))
-            ->input('email', new EmailFilter(), $emailValidator)
-            ->input('message', new StringFilter(), new EmptyValidator('Message'))
-            ->handle($request);
-
-        if($this->form->validate()) {
-            $data = $this->form->getData();
-            $this->messagesDao->saveMessage($data['name'], $data['email'], $data['message'], new \DateTime());
+        if($this->form->handle($request)->validate()) {
+            $message = $this->form->getMessage();
+            $this->messagesDao->saveMessage($message);
             return $response->withRedirect('/guestbook');
         } else {
             return $this->view->render($response, 'guestbook.html.twig', [
-                'errors' => $this->form->getErrors(),
                 'messages' => $this->messagesDao->getMessages(),
+                'errors' => $this->form->getErrors(),
                 'data' => $this->form->getData()
             ]);
         }

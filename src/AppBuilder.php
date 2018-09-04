@@ -8,6 +8,7 @@ use Guestbook\Action\HealthCheckAction;
 use Guestbook\Dao\MessagesDao;
 use Guestbook\Dao\PDOFactory;
 use Guestbook\Form\Form;
+use Guestbook\Form\MessageForm;
 use Guestbook\Validator\ValidatorChain;
 use Slim\App;
 use Slim\Container;
@@ -45,7 +46,7 @@ class AppBuilder
             return new GuestbookAction($container->get(MessagesDao::class), $container->get('view'));
         };
         $container[GuestbookAddAction::class] = function (Container $container) {
-            return new GuestbookAddAction($container->get(MessagesDao::class), $container->get('view'), new Form());
+            return new GuestbookAddAction($container->get(MessagesDao::class), $container->get('view'), new MessageForm());
         };
         $container[MessagesDao::class] = function (Container $container) {
             return new MessagesDao($container->get('PDO'));
