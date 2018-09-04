@@ -58,7 +58,12 @@ class GuestbookAddAction
         } catch (ValidationException $ex) {
             return $this->view->render($response, 'guestbook.html.twig', [
                 'errors' => $ex->getMessage(),
-                'messages' => $this->messagesDao->getMessages()
+                'messages' => $this->messagesDao->getMessages(),
+                'data' => [
+                    'name' => $name,
+                    'email' => $email,
+                    'message' => $message
+                ]
             ]);
         }
     }
