@@ -2,6 +2,7 @@
 
 namespace Test\Filter;
 
+use Guestbook\Filter\EmailFilter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,7 +16,16 @@ class EmailFilterTest extends TestCase
      */
     public function filter_GivenValidEmail_ReturnsSameValue() {
         $value = 'test@test.com';
-        $filter = new \Guestbook\Filter\EmailFilter();
+        $filter = new EmailFilter();
         $this->assertEquals('test@test.com', $filter->filter($value));
+    }
+
+    /**
+     * @test
+     */
+    public function filter_GivenInValidEmail_ReturnsCleanedValue() {
+        $value = 'test(_test)@test.com';
+        $filter = new EmailFilter();
+        $this->assertEquals('test_test@test.com', $filter->filter($value));
     }
 }

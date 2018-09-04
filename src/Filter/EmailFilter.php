@@ -10,6 +10,6 @@ class EmailFilter
 {
     public function filter($value)
     {
-        return $value;
+        return filter_var($value, FILTER_SANITIZE_EMAIL);
     }
 }
