@@ -18,12 +18,12 @@ class ValidatorChainTest extends TestCase
      */
     public function validate_givenOneValidatorAndItThrowsException_throwsException() {
         $validator = new \Guestbook\Validator\ValidatorChain();
-        $emptyValidator = new EmptyValidator('Name', '');
+        $emptyValidator = new EmptyValidator('Name');
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Name can not be empty');
         $validator
             ->add($emptyValidator)
-            ->validate();
+            ->validate('');
     }
 
     /**
@@ -46,7 +46,7 @@ class ValidatorChainTest extends TestCase
      */
     public function validate_givenZeroValidator_returnsNull() {
         $validator = new \Guestbook\Validator\ValidatorChain();
-        $validator->validate();
+        $validator->validate(null);
         $this->expectNotToPerformAssertions();
     }
 }
