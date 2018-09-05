@@ -21,9 +21,10 @@ class GuestbookAction
     private $messagesDao;
 
     /**
-     * @var ViewRenderer
+     * @var Twig
      */
     private $renderer;
+
     /**
      * @var CSRFTokenValidator
      */

@@ -30,6 +30,7 @@ class GuestbookAddAction
      * @var Form
      */
     private $form;
+
     /**
      * @var CSRFTokenValidator
      */
